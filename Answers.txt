@@ -1,0 +1,148 @@
+-- BASIC --
+-- LESSON 1 -- 
+SELECT 
+  year "Year", 
+  month "Month", 
+  month_name "Month Name", 
+  south "South", 
+  west "West", 
+  midwest "Midwest", 
+  northeast "Northeast"
+FROM tutorial.us_housing_units
+
+-- LESSON 2 --
+SELECT * FROM tutorial.us_housing_units 
+LIMIT 15
+
+-- LESSON 3 -- 
+SELECT * FROM tutorial.us_housing_units 
+WHERE month_name = 'February'
+
+-- LESSON 4 --
+SELECT * FROM tutorial.us_housing_units 
+WHERE LEFT(month_name, 1) <= 'N' 
+
+-- LESSON 5 --
+SELECT 
+  year,
+  month,
+  south,
+  west,
+  midwest, 
+  northeast,
+  south + west + midwest + northeast all_regions 
+FROM tutorial.us_housing_units
+
+-- LESSON 6 --
+SELECT * FROM tutorial.us_housing_units
+WHERE west > (midwest + northeast)
+
+-- LESSON 7 --
+SELECT 
+  year,
+  month,
+  west/(west + south + midwest + northeast)*100 percent_west,
+  south/(west + south + midwest + northeast)*100 percent_south,
+  midwest/(west + south + midwest + northeast)*100 percent_midwest,
+  northeast/(west + south + midwest + northeast)*100 percent_northeast
+  FROM tutorial.us_housing_units 
+  WHERE year >= 2000
+  
+-- LESSON 8 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE group_name ILIKE '%ludacris%'
+
+--LESSON 9 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE group_name LIKE 'DJ%'
+
+-- LESSON 10 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE group_name IN ('M.C. Hammer', 'Hammer', 'Elvis Presley')
+
+-- LESSON 11 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE year BETWEEN 1985 AND 1990
+
+-- LESSON 12 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE song_name IS NULL
+
+-- LESSON 13 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE year_rank <= 10 AND group_name ILIKE '%ludacris%'
+
+-- LESSON 14 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE year_rank = 1 AND year IN (1990, 2000, 2010)
+
+-- LESSON 15 --
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE year BETWEEN 1960 AND 1969 AND song_name ilike '%love%'
+
+-- LESSON 16 -- 
+SELECT * FROM tutorial.billboard_top_100_year_end
+WHERE year_rank <= 10 AND (group_name ILIKE '%katy perry%' OR group_name ILIKE '%bon jovi%')
+
+
+
+--INTERMEDIATE --
+-- LESSON 1 --
+SELECT COUNT(low) low FROM tutorial.aapl_historical_stock_price
+
+-- LESSON 2 --
+SELECT 
+  COUNT(year) year,
+  COUNT(month) month,
+  COUNT(open) open,
+  COUNT(high) high,
+  COUNT(low) low,
+  COUNT(close) close,
+  COUNT(volume) volume
+FROM tutorial.aapl_historical_stock_price
+
+-- LESSON 3 --
+SELECT SUM(open)/COUNT(open) AS avg_open_price FROM tutorial.aapl_historical_stock_price
+
+-- LESSON 4 --
+SELECT MIN(low) FROM tutorial.aapl_historical_stock_price
+
+-- LESSON 5 --
+SELECT MAX(close - open) FROM tutorial.aapl_historical_stock_price
+
+-- LESSON 6 --
+SELECT AVG(volume) average_volume FROM tutorial.aapl_historical_stock_price
+-- LESSON 7 --
+SELECT 
+  year, 
+  month,
+  SUM(volume) volume_sum
+FROM tutorial.aapl_historical_stock_price
+GROUP BY year, month
+ ORDER BY year, month
+ 
+-- LESSON 8 --
+SELECT 
+  year,
+  AVG(close - open) AS avg_daily_change
+FROM tutorial.aapl_historical_stock_price
+GROUP BY 1
+ORDER BY 1
+ 
+-- LESSON 9 --
+SELECT year,
+       month,
+       MIN(low) AS lowest_price,
+       MAX(high) AS highest_price
+  FROM tutorial.aapl_historical_stock_price
+ GROUP BY 1, 2
+ ORDER BY 1, 2
+
+-- LESSON 10 --
+SELECT 
+  player_name,
+  state,
+  CASE WHEN state = 'CA' THEN 'yes'
+  ELSE NULL END AS from_california
+FROM benn.college_football_players
+ORDER BY 3
